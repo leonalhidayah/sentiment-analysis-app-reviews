@@ -1,0 +1,4 @@
+Pipfile
+Pipfile.lock
+__pycache__/
+data/processed/df_processed_full_100rb.csv
