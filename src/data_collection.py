@@ -1,4 +1,5 @@
 import csv
+from datetime import datetime
 from pathlib import Path
 
 from google_play_scraper import Sort, reviews
@@ -16,7 +17,8 @@ def scrape_play_store_reviews(app_id, jumlah_ulasan, output_dir="data/raw", scor
     # Setup path
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
-    filename = f"reviews_{app_id}_{score}.csv"
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"reviews_{timestamp}.csv"
     file_path = output_path / filename
 
     # Lakukan scraping
@@ -26,7 +28,7 @@ def scrape_play_store_reviews(app_id, jumlah_ulasan, output_dir="data/raw", scor
             app_id,
             lang="id",
             country="id",
-            sort=Sort.MOST_RELEVANT,
+            sort=Sort.NEWEST,
             count=jumlah_ulasan,
             filter_score_with=score,
         )
@@ -63,8 +65,7 @@ def scrape_play_store_reviews(app_id, jumlah_ulasan, output_dir="data/raw", scor
         return None
 
 
-# Contoh penggunaan
+# # Contoh penggunaan
 if __name__ == "__main__":
     app_id = "com.ss.android.ugc.trill"  # ID aplikasi TikTok
-    scrape_play_store_reviews(app_id=app_id, jumlah_ulasan=6000, score=1)
-    scrape_play_store_reviews(app_id=app_id, jumlah_ulasan=6000, score=5)
+    scrape_play_store_reviews(app_id=app_id, jumlah_ulasan=1000000)
