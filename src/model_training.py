@@ -3,6 +3,7 @@ import time
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
+from sklearn.exceptions import NotFittedError
 from sklearn.metrics import (
     accuracy_score,
     classification_report,
@@ -11,6 +12,7 @@ from sklearn.metrics import (
     precision_score,
     recall_score,
 )
+from sklearn.utils.validation import check_is_fitted
 
 
 def plot_confusion_matrix(cm):
@@ -140,6 +142,7 @@ def train_and_evaluate_models(X_train, X_test, y_train, y_test, models):
         )
 
     result_df = pd.DataFrame(evaluation_results)
+
     return result_df
 
 
@@ -150,3 +153,20 @@ def save_model(model, file_path):
     import joblib
 
     joblib.dump(model, file_path)
+
+
+def is_model_fitted(model):
+    """
+    Mengecek apakah model sklearn sudah di-fit atau belum.
+
+    Args:
+        model: Estimator sklearn
+
+    Returns:
+        bool: True jika sudah di-fit, False jika belum
+    """
+    try:
+        check_is_fitted(model)
+        return True
+    except NotFittedError:
+        return False
